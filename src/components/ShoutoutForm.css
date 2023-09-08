@@ -1,0 +1,29 @@
+.ShoutoutForm {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  padding: 20px 10px;
+  margin: 20px;
+}
+
+.ShoutoutForm label {
+  padding-top: 10px;
+}
+
+.ShoutoutForm input {
+  width: 50%;
+}
+
+.ShoutoutForm textarea {
+  margin-bottom: 20px;
+}
+
+.ShoutoutForm button {
+  background-color: white;
+  border: 1px solid #999;
+  border-radius: 10px;
+  padding: 5px;
+  width: 50%;
+}

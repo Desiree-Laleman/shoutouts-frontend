@@ -1,0 +1,15 @@
+.ShoutoutCard {
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.ShoutoutCard div p {
+  font-size: small;
+}
+
+.ShoutoutCard p {
+  padding: 5px 0;
+  font-size: large;
+}

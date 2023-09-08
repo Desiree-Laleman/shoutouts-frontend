@@ -1,0 +1,13 @@
+.ShoutoutList ul {
+  list-style: none;
+  padding: 0 10px;
+}
+
+.ShoutoutList li {
+  padding: 0 10px;
+}
+
+.ShoutoutList li p,
+.ShoutoutList li h2 {
+  margin: 0;
+}
