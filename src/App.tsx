@@ -1,13 +1,11 @@
 import "./App.css";
 import HomeRoute from "./components/HomeRoute";
-import ShoutoutList from "./components/ShoutoutList";
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
 } from "react-router-dom";
-import SingleShoutoutRoute from "./components/ShoutoutsByNameRoute";
 import ShoutoutsByNameRoute from "./components/ShoutoutsByNameRoute";
 
 function App() {
