@@ -13,18 +13,26 @@ const ShoutoutCard = ({ shoutout, deleteShoutoutHandler }: Props) => {
       <div>
         <h2>
           Shout out to{" "}
-          <Link to={`/user/${encodeURIComponent(shoutout.to)}`}>
+          <Link to={`/shoutouts?${new URLSearchParams({ to: shoutout.to })}`}>
             {shoutout.to}
           </Link>
         </h2>
         <p>
           - from{" "}
-          <Link to={`/user/${encodeURIComponent(shoutout.from)}`}>
+          <img
+            id="user-icon"
+            src={shoutout.profilePic}
+            alt={shoutout.profilePic}
+          />{" "}
+          <Link to={`/shoutouts?${new URLSearchParams({ to: shoutout.from })}`}>
             {shoutout.from}
           </Link>
         </p>
       </div>
       <p>{shoutout.text}</p>
+      {shoutout.shoutoutPic && (
+        <img src={shoutout.shoutoutPic} alt={shoutout.text} />
+      )}
       <button onClick={() => deleteShoutoutHandler(shoutout._id!)}>
         Delete Shout Out
       </button>

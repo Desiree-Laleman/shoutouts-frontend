@@ -1,0 +1,21 @@
+.Header {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  font-family: "Timmana", sans-serif;
+}
+.Header h1 {
+  color: orangered;
+  margin: 10px 0 0 20px;
+}
+.Header button {
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+  background-color: grey;
+}
+.Header button:hover {
+  background-color: orangered;
+}

@@ -1,6 +1,9 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import "./ShoutoutForm.css";
 import Shoutout from "../models/Shoutout";
+import AuthContext from "../context/AuthContext";
+import { storage } from "../firebaseConfig";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
   addShoutOutHandler: (shoutout: Shoutout) => void;
@@ -8,13 +11,29 @@ interface Props {
 }
 
 const ShoutoutForm = ({ addShoutOutHandler, name }: Props) => {
-  const [to, setTo] = useState(name ? name : "");
-  const [from, setFrom] = useState("");
+  const { user } = useContext(AuthContext);
+  const [to, setTo] = useState(name || "");
+  const [from, setFrom] = useState(user?.displayName || "");
   const [text, setText] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    addShoutOutHandler({ to, from, text });
+    const files = fileInputRef.current?.files;
+    const shoutout: Shoutout = { to, from, text, profilePic: user?.photoURL! };
+    if (files && files[0]) {
+      const file = files[0]; // Here is the file we need
+      const storageRef = ref(storage, "shoutouts/" + file.name);
+      const snapshot = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      shoutout.shoutoutPic = url;
+      // uploadBytes(storageRef, file).then((snapshot) => {
+      //   getDownloadURL(snapshot.ref).then((url) => {
+      //     shoutout.shoutoutPic = url;
+      //   });
+      // });
+    }
+    addShoutOutHandler(shoutout);
     setTo("");
     setFrom("");
     setText("");
@@ -43,6 +62,7 @@ const ShoutoutForm = ({ addShoutOutHandler, name }: Props) => {
         id="from"
         value={from}
         onChange={(event) => setFrom(event.target.value)}
+        disabled={!!user}
       />
       <label htmlFor="shoutout">Shout Out</label>
       <textarea
@@ -54,6 +74,10 @@ const ShoutoutForm = ({ addShoutOutHandler, name }: Props) => {
         value={text}
         onChange={(event) => setText(event.target.value)}
       />
+
+      <label htmlFor="upload">File Upload</label>
+      <input ref={fileInputRef} type="file" id="upload" name="upload" />
+
       <button>Submit Shout Out!</button>
     </form>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Shoutout from "../models/Shoutout";
 import "./HomeRoute.css";
 import {
@@ -8,12 +8,14 @@ import {
 } from "../services/shoutoutService";
 import ShoutoutList from "./ShoutoutList";
 import ShoutoutForm from "./ShoutoutForm";
+import AuthContext from "../context/AuthContext";
 
 const HomeRoute = () => {
+  const { user } = useContext(AuthContext);
   const [shoutouts, setShoutouts] = useState<Shoutout[]>([]);
 
   const loadShoutouts = async (): Promise<void> => {
-    setShoutouts(await getAllShoutouts());
+    setShoutouts(await getAllShoutouts(null, null));
   };
 
   const addShoutoutHandler = async (shoutout: Shoutout): Promise<void> => {
@@ -35,7 +37,14 @@ const HomeRoute = () => {
   return (
     <div className="HomeRoute">
       <h1>All Shoutouts</h1>
-      <ShoutoutForm addShoutOutHandler={addShoutoutHandler} />
+      {user ? (
+        <ShoutoutForm addShoutOutHandler={addShoutoutHandler} />
+      ) : (
+        <>
+          <p>Sign in to leave a shoutout</p>
+          <button>Sign in with Google</button>
+        </>
+      )}
       <ShoutoutList
         shoutouts={shoutouts}
         deleteShoutoutHandler={deleteShoutoutHandler}

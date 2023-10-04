@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./ShoutoutsByNameRoute.css";
 import { useCallback, useEffect, useState } from "react";
 import Shoutout from "../models/Shoutout";
@@ -6,18 +6,18 @@ import ShoutoutList from "./ShoutoutList";
 import {
   addShoutout,
   deleteShoutout,
-  getShoutoutsByName,
+  getAllShoutouts,
 } from "../services/shoutoutService";
 import ShoutoutForm from "./ShoutoutForm";
 
 const ShoutoutsByNameRoute = () => {
   const [shoutouts, setShoutouts] = useState<Shoutout[]>([]);
-
-  const name: string | undefined = useParams().name;
+  const [searchParams] = useSearchParams();
+  const to = searchParams.get("to");
 
   const loadShoutouts = useCallback(async () => {
-    setShoutouts(await getShoutoutsByName(name!));
-  }, [name]);
+    setShoutouts(await getAllShoutouts(to, null));
+  }, [to]);
 
   const addShoutoutHandler = async (shoutout: Shoutout): Promise<void> => {
     await addShoutout(shoutout);
@@ -33,12 +33,12 @@ const ShoutoutsByNameRoute = () => {
     (async () => {
       loadShoutouts();
     })();
-  }, [name, loadShoutouts]);
+  }, [to, loadShoutouts]);
 
   return (
     <div className="ShoutoutsByNameRoute">
-      <h1>Shoutouts for {name}</h1>
-      <ShoutoutForm addShoutOutHandler={addShoutoutHandler} name={name} />
+      <h1>Shoutouts for {to}</h1>
+      <ShoutoutForm addShoutOutHandler={addShoutoutHandler} name={to!} />
       <Link to="/">Back to Homepage</Link>
       <ShoutoutList
         shoutouts={shoutouts}
